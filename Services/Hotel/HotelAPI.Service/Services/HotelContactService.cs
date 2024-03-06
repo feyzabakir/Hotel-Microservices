@@ -2,6 +2,7 @@
 using HotelAPI.Models;
 using HotelAPI.Models.Dtos;
 using HotelAPI.Service.Settings;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -22,61 +23,45 @@ namespace HotelAPI.Service.Services
             _hotelContactCollection = database.GetCollection<HotelContact>(databaseSettings.HotelContactCollectionName);
         }
 
-        public async Task<Response<HotelContact>> CreateHotelAsync(HotelContact contact)
+        public async Task<Response<HotelContact>> AddHotelContactAsync(HotelContact hotelContact)
         {
             try
             {
-                await _hotelContactCollection.InsertOneAsync(contact);
-                return Response<HotelContact>.Success(contact, statusCode: 201);
+                await _hotelContactCollection.InsertOneAsync(hotelContact);
+                return Response<HotelContact>.Success(hotelContact, 201);
             }
             catch (Exception ex)
             {
-                return Response<HotelContact>.Fail(new List<string> { ex.Message }, statusCode: 500);
+                return Response<HotelContact>.Fail(new List<string> { ex.Message }, 500);
             }
         }
 
-        public async Task<Response<NoContent>> DeleteHotelAsync(string hotelId)
+        public async Task<Response<NoContent>> DeleteHotelContactAsync(ObjectId hotelContactId)
         {
             try
             {
-                // hotelId stringini Guid türüne dönüştürmemiz gerekiyor
-                Guid guidHotelId = Guid.Parse(hotelId);
+                var result = await _hotelContactCollection.DeleteOneAsync(contact => contact.Id == hotelContactId);
+                if (result.DeletedCount == 0)
+                    return Response<NoContent>.Fail(new List<string> { "Hotel contact not found" }, 404);
 
-                var deleteResult = await _hotelContactCollection.DeleteOneAsync(x => x.UUID == guidHotelId);
-
-                if (deleteResult.DeletedCount > 0)
-                    return Response<NoContent>.Success(statusCode: 204);
-
-                return Response<NoContent>.Fail("Hotel not found", statusCode: 404);
-            }
-            catch (FormatException)
-            {
-                // hotelId stringi geçersiz bir Guid formatında ise buraya düşer
-                return Response<NoContent>.Fail("Invalid hotelId format", statusCode: 400);
+                return Response<NoContent>.Success(204);
             }
             catch (Exception ex)
             {
-                return Response<NoContent>.Fail(new List<string> { ex.Message }, statusCode: 500);
+                return Response<NoContent>.Fail(new List<string> { ex.Message }, 500);
             }
-        }  
+        }
 
-        public async Task<Response<List<HotelContact>>> GetHotelContactsByIdAsync(string contactId)
+        public async Task<Response<IEnumerable<HotelContact>>> GetHotelsAsync()
         {
             try
             {
-                Guid id = Guid.Parse(contactId);
-
-                var contacts = await _hotelContactCollection.Find(x => x.UUID == id).ToListAsync();
-
-                return Response<List<HotelContact>>.Success(contacts, statusCode: 200);
-            }
-            catch (FormatException)
-            {
-                return Response<List<HotelContact>>.Fail("Invalid contactId format", statusCode: 400);
+                var hotels = await _hotelContactCollection.Find(_ => true).ToListAsync();
+                return Response<IEnumerable<HotelContact>>.Success(hotels, 200);
             }
             catch (Exception ex)
             {
-                return Response<List<HotelContact>>.Fail(new List<string> { ex.Message }, statusCode: 500);
+                return Response<IEnumerable<HotelContact>>.Fail(new List<string> { ex.Message }, 500);
             }
         }
     }

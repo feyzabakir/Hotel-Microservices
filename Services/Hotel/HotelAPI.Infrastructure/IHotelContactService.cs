@@ -5,13 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace HotelAPI.Infrastructure
 {
     public interface IHotelContactService
     {
-        Task<Response<List<HotelContact>>> GetHotelContactsByIdAsync(string contactId);
-        Task<Response<HotelContact>> CreateHotelAsync(HotelContact contact);
-        Task<Response<NoContent>> DeleteHotelAsync(string contactId);      
+        Task<Response<IEnumerable<HotelContact>>> GetHotelsAsync();
+
+        Task<Response<HotelContact>> AddHotelContactAsync(HotelContact hotelContact);
+
+        Task<Response<NoContent>> DeleteHotelContactAsync(ObjectId hotelContactId);
+      
     }
 }

@@ -12,9 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddScoped<IHotelService,HotelService>();
 builder.Services.AddScoped<IHotelContactService,HotelContactService>();
 builder.Services.AddScoped<IHotelAuthorizedService,HotelAuthorizedService>();
+
 
 //mongoDB
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
