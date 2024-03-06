@@ -10,6 +10,6 @@ namespace HotelAPI.Infrastructure
 {
     public interface IHotelAuthorizedService
     {
-        Task<Response<List<HotelAuthorized>>> GetHotelAuthorizedAsync(string hotelId);
+        Task<Response<IEnumerable<HotelAuthorized>>> GetAllAuthorizedsAsync();
     }
 }

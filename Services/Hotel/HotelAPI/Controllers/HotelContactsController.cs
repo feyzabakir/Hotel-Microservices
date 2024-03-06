@@ -14,24 +14,25 @@ namespace HotelAPI.Controllers
             _hotelContactService = hotelContactService;
         }
 
-        [HttpGet("{contactId}")]
-        public async Task<IActionResult> GetHotelContacts(string contactId)
+        [HttpGet]
+        public async Task<IActionResult> GetHotelsAsync()
         {
-            var response = await _hotelContactService.GetHotelContactsByIdAsync(contactId);
+            var response = await _hotelContactService.GetHotelsAsync();
             return CreateActionResult(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateHotelContact(HotelContact contact)
+        public async Task<IActionResult> AddHotelContactAsync(HotelContact hotelContact)
         {
-            var response = await _hotelContactService.CreateHotelAsync(contact);
+            var response = await _hotelContactService.AddHotelContactAsync(hotelContact);
             return CreateActionResult(response);
         }
 
-        [HttpDelete("{contactId}")]
-        public async Task<IActionResult> DeleteHotel(string contactId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHotelContactAsync(string id)
         {
-            var response = await _hotelContactService.DeleteHotelAsync(contactId);
+            var objectId = new MongoDB.Bson.ObjectId(id);
+            var response = await _hotelContactService.DeleteHotelContactAsync(objectId);
             return CreateActionResult(response);
         }
     }

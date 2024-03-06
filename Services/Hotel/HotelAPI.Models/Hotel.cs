@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace HotelAPI.Models;
 
-public class Hotel
+public class Hotel : BaseEntity
 {
-    public Guid UUID { get; set; }
-
     public string Name { get; set; }
 
-    public List<HotelAuthorized> HotelAuthorizeds { get; set; }
+    public ICollection<HotelAuthorized> HotelAuthorizeds { get; set; }
 
-    public List<HotelContact> HotelContacts { get; set; }
+    public ICollection<HotelContact> HotelContacts { get; set; }
 }

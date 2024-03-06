@@ -11,12 +11,12 @@ namespace HotelAPI.Controllers
         {
             _hotelAuthorizedService = hotelAuthorizedService;
         }
-        [HttpGet("{hotelId}")]
-        public async Task<IActionResult> GetHotelAuthorized(string hotelId)
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAuthorizedsAsync()
         {
-            var response = await _hotelAuthorizedService.GetHotelAuthorizedAsync(hotelId);
+            var response = await _hotelAuthorizedService.GetAllAuthorizedsAsync();
             return CreateActionResult(response);
         }
-
     }
 }
