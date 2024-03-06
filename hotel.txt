@@ -1,1 +1,3 @@
 Services - HotelAPI - port => 5011
+Report - ReportAPI - port => 5012
+Gateway - port => 5189
