@@ -42,6 +42,12 @@ Projeyi http'de çalıştırdıktan sonra URL'de `localhost:5011/swagger/index.h
 
 ## Report
 
+-	Otellerin bulundukları konuma göre istatistiklerini çıkartan bir rapor talebi
+-	Sistemin oluşturduğu raporların listelenmesi
+-	Sistemin oluşturduğu bir raporun detay bilgilerinin getirilmesi
+
+  işlemleri yapılmıştr.
+
 RabbitMQ ve MongoDB kullanılmıştır. Api Gateway de Ocelot kütüphanesi kullanılmıştır.
 
 `localhost:5012/swagger/index.html`
